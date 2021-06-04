@@ -1,0 +1,94 @@
+{{!
+    This file is not a part of Moodle - http://moodle.org/
+    This is a none core contributed module.
+
+    This is free software: you can redistribute it and/or modify
+    it under the terms of the GNU General Public License as published by
+    the Free Software Foundation, either version 3 of the License, or
+    (at your option) any later version.
+
+    This is distributed in the hope that it will be useful,
+    but WITHOUT ANY WARRANTY; without even the implied warranty of
+    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+    GNU General Public License for more details.
+
+    The GNU General Public License
+    can be see at <http://www.gnu.org/licenses/>.
+}}
+{{!
+    @template local_catalog/products_catalog
+
+    Template which defines how a products catalog is output.
+
+    Classes required for JS:
+    * add-to-order-action
+    * added-to-order-note
+
+    Data attributes required for JS:
+    * data-product-id
+
+    Context variables required for this template:
+    * cataloghasproducts: defines if the catalog contains any products items.
+    * canaddtoorder: if the user has capability to add this product to order.
+    * products: an array of products items with the following variables for each:
+        * id: product ID.
+        * imageurl: URL of the product image.
+        * title: product title.
+        * description: product description.
+        * addedtoorder: if this product was added to user's order previously.
+
+    Example context (json):
+    {
+        "cataloghasproducts": true,
+        "canaddtoorder": true,
+        "products": [
+            {
+                "id": "1",
+                "imageurl": "http://pluginfile.php/fancyproductimage",
+                "title": "A Product",
+                "description": "Product description.",
+                "addedtoorder": false
+            },
+            {
+                "id": "2",
+                "imageurl": "http://pluginfile.php/anotherfancyproductimage",
+                "title": "Another Product",
+                "description": "Product description.",
+                "addedtoorder": false
+            }
+        ]
+    }
+}}
+
+{{^cataloghasproducts}}
+    <div class="alert alert-info">
+        {{# str }} noproductsincatalog, local_catalog {{/ str }}
+    </div>
+{{/cataloghasproducts}}
+{{#cataloghasproducts}}
+    <div class="products-catalog d-flex flex-wrap">
+        {{#products}}
+            <div class="card">
+                <img class="card-img-top" src="{{imageurl}}"/>
+                <div class="card-body">
+                    <h5 class="card-title">{{{title}}}</h5>
+                    <p class="card-text">{{{description}}}</p>
+                </div>
+                {{#canaddtoorder}}
+                    <div class="card-footer text-center">
+                        {{^addedtoorder}}
+                            <button class="btn btn-primary add-to-order-action" data-product-id="{{id}}">{{# str }} addtoorder, local_catalog {{/ str }}</button>
+                        {{/addedtoorder}}
+                        <div class="added-to-order-note"{{^addedtoorder}} style="display: none;"{{/addedtoorder}}>{{# str }} addedtoorder, local_catalog {{/ str }}</div>
+                    </div>
+                {{/canaddtoorder}}
+            </div>
+        {{/products}}
+    </div>
+
+    {{#js}}
+        require(['local_catalog/products_catalog'], (Catalog) => {
+            Catalog.init()
+        });
+    {{/js}}
+{{/cataloghasproducts}}

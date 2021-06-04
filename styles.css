@@ -1,0 +1,27 @@
+.products-catalog {
+    margin-bottom: 2em;
+}
+
+.products-catalog .card {
+    width: 18rem;
+    margin: 0.5rem auto 0 auto;
+}
+
+.products-catalog .card-body {
+    height: 10rem;
+    overflow-y: hidden;
+}
+
+.products-catalog .card-footer {
+    height: 4rem;
+}
+
+.products-catalog .card-footer .added-to-order-note {
+    padding-top: 0.5rem;
+}
+
+.manage-products-table,
+.orders-table {
+    margin-top: 1rem;
+    margin-bottom: 1rem;
+}
